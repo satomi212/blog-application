@@ -1,14 +1,15 @@
 <?php
 session_start();
-session_start();
 $message = $_SESSION['name'] ?? [];
 unset($_SESSION['login']);
+
 
 //ログインされていない場合は強制的にログインページへ
 if (!isset($_SESSION['id'])) {
     header('Location: ./user/signin.php');
     exit();
 }
+
 
 // DB接続
 $db['user_name'] = 'root';
@@ -19,8 +20,10 @@ $pdo = new PDO(
     $db['password']
 );
 
+
 // 検索機能
 $sql = "SELECT * FROM blogs WHERE contents LIKE '%" . $_POST['search'] . "%' ";
+
 
 // ソート機能
 $sortMode = '';
@@ -31,15 +34,16 @@ if (!empty($_GET['order'])) {
         FILTER_SANITIZE_FULL_SPECIAL_CHARS
     );
 }
-if ($sortMode == 'asc' || $sortMode == 'desc') {
-    $sql = $sql . "order by created_at $sortMode";
-}
+
+if ($sortMode == 'asc' || $sortMode == 'desc') $sql = $sql . "order by created_at $sortMode";
+
 
 // 実行
 $statement = $pdo->prepare($sql);
 $statement->execute();
 $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -52,9 +56,7 @@ $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
 </head>
 
 <body>
-    <main>
     <header>
-
         <div class="w-full">
             <nav class="bg-white shadow-lg">
                 <div class="md:flex items-center justify-between py-2 px-8 md:px-12">
@@ -72,12 +74,12 @@ $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
             </nav>
         </div>
 
-    <h3 class="headline">
-        <a><?php echo 'こんにちは' . $message . 'さん'; ?></a>
-    </h3>
-</header>
+        <h3 class="headline">
+            <a><?php echo 'こんにちは' . $message . 'さん'; ?></a>
+        </h3>
+    </header>
 
-
+    <main>
         <div class="title">
             <h1>blog一覧</h1>
         </div>
