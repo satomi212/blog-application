@@ -1,5 +1,11 @@
 <?php
+$email = filter_input(INPUT_POST, 'email');
+$password = filter_input(INPUT_POST, 'password');
+
+
 session_start();
+if (empty($email) || empty($password)) $_SESSION['errors'] = 'パスワードとメールアドレスを入力してください';
+
 
 // DB接続
 $db['user_name'] = 'root';
@@ -11,10 +17,6 @@ $pdo = new PDO(
 );
 
 
-$email = filter_input(INPUT_POST, 'email');
-$password = filter_input(INPUT_POST, 'password');
-
-
 // Email取得
 $sql = 'SELECT * FROM users WHERE email = :email';
 $statement = $pdo->prepare($sql);
@@ -23,24 +25,15 @@ $statement->execute();
 $users = $statement->fetch(PDO::FETCH_ASSOC);
 
 
-// バリデーション
-if (empty($email) || empty($password)) $_SESSION['errors'][] = '「Email」または「パスワード」を入力してください';
-
-if (!password_verify($password, $users['password'])) $_SESSION['errors'][] = 'パスワードが違います';
-
-
-// エラーなかったら実行
-if (!empty($_SESSION['errors'])) {
+if (!password_verify($password, $users['password'])) {
+    $_SESSION['errors'] = 'メールアドレスまたはパスワードが違います';
     header('location: ./signin.php');
     exit();
-} else {
-    $statement->execute();
-    // セッションにログイン情報を登録
-    $_SESSION['id'] = $users['id'];
-    $_SESSION['name'] = $users['name'];
-    $_SESSION['email'] = $users['email'];
-
-    header('location: ../index.php');
-    exit();
 }
+
+
+$_SESSION['id'] = $users['id'];
+$_SESSION['name'] = $users['name'];
+header('location: ../index.php');
+exit();
 ?>
