@@ -7,7 +7,6 @@ $pdo = new PDO(
     $db['password']
 );
 
-// 削除機能
 $id = filter_input(INPUT_GET, 'id');
 $sql = 'DELETE FROM blogs WHERE id = :id';
 $statement = $pdo->prepare($sql);
