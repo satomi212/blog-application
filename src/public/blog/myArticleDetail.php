@@ -2,19 +2,21 @@
 // DB接続
 $db['user_name'] = 'root';
 $db['password'] = 'password';
-$pdo = new PDO("mysql:host=mysql; dbname=blog; charset=utf8", $db['user_name'], $db['password']);
+$pdo = new PDO(
+    'mysql:host=mysql; dbname=blog; charset=utf8',
+    $db['user_name'],
+    $db['password']
+);
 
 // ブログ取得
 $id = filter_input(INPUT_GET, 'id');
-$sql = "SELECT * FROM blogs WHERE id = :id";
+$sql = 'SELECT * FROM blogs WHERE id = :id';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':id', $id, PDO::PARAM_INT);
 $statement->execute();
 $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
 // 編集機能
-
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +50,9 @@ $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
         </form>
 
         <!-- 削除 -->
-        <form action="./deleteBlogs.php?id=<?php echo $blog['id']; ?>" method="post">
+        <form action="./deleteBlogs.php?id=<?php echo $blog[
+            'id'
+        ]; ?>" method="post">
             <button type="submit">削除</button>
         </form>
 

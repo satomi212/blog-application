@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 // ログインしてなかったらログインページへ
 if (!isset($_SESSION['id'])) {
     header('Location: ./user/signin.php');
@@ -11,12 +10,14 @@ if (!isset($_SESSION['id'])) {
 $_SESSION = [];
 
 //クッキーに登録されているセッションidの情報を削除
-if (isset($_COOKIE[session_name()])) setcookie(session_name(), '', time() - 42000, '/');
+if (isset($_COOKIE[session_name()])) {
+    setcookie(session_name(), '', time() - 42000, '/');
+}
 
 // セッションを破棄
 session_destroy();
 
-header("location: ./signin.php");
+header('location: ./signin.php');
 exit();
 ?>
 

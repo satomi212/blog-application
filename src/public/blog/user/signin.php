@@ -1,7 +1,7 @@
 <?php
 session_start();
 $registed = $_SESSION['registed'] ?? '';
-$errors = $_SESSION['errors'] ?? [];
+$error = $_SESSION['errors'] ?? '';
 
 $_SESSION['registed'] = '';
 unset($_SESSION['errors']);
@@ -23,12 +23,7 @@ unset($_SESSION['errors']);
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>
             <h3 class="mb-5 text-xl"><?php echo $registed; ?></h3>
-            <p class="text-red-600">
-
-            <?php foreach ($errors as $error): ?>
-                <?php echo $error; ?></p>
-            <?php endforeach; ?>
-
+            <p class="text-red-600"><?php echo $error; ?></p>
             <form class="px-4" action="./completeSignin.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full"
                 type=“text” name="email" type="email" required placeholder="Email" value="<?php if (
@@ -36,7 +31,6 @@ unset($_SESSION['errors']);
                 ) {
                     echo $_SESSION['email'];
                 } ?>"></p>
-
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password"></p>
 
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mb-5 w-full" type="submit">ログイン</button>

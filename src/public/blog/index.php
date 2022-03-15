@@ -3,13 +3,11 @@ session_start();
 $message = $_SESSION['name'] ?? [];
 unset($_SESSION['login']);
 
-
 //ログインされていない場合は強制的にログインページへ
 if (!isset($_SESSION['id'])) {
     header('Location: ./user/signin.php');
     exit();
 }
-
 
 // DB接続
 $db['user_name'] = 'root';
@@ -20,10 +18,8 @@ $pdo = new PDO(
     $db['password']
 );
 
-
 // 検索機能
 $sql = "SELECT * FROM blogs WHERE contents LIKE '%" . $_POST['search'] . "%' ";
-
 
 // ソート機能
 $sortMode = '';
@@ -35,8 +31,9 @@ if (!empty($_GET['order'])) {
     );
 }
 
-if ($sortMode == 'asc' || $sortMode == 'desc') $sql = $sql . "order by created_at $sortMode";
-
+if ($sortMode == 'asc' || $sortMode == 'desc') {
+    $sql = $sql . "order by created_at $sortMode";
+}
 
 // 実行
 $statement = $pdo->prepare($sql);

@@ -28,11 +28,19 @@ unset($_SESSION['errors']);
 
         <form action="./completeSignup.php" method="post">
             <div class="mail">
-                <input type="text" name="name" id="name" placeholder="User name" required value="<?php if (isset($_SESSION['name'])) echo $_SESSION['name']; ?>">
+                <input type="text" name="name" id="name" placeholder="User name" required value="<?php if (
+                    isset($_SESSION['name'])
+                ) {
+                    echo $_SESSION['name'];
+                } ?>">
             </div>
 
             <div class="email">
-                <input type="email" name="email" id="email" placeholder="Email" required value="<?php if (isset($_SESSION['email'])) echo $_SESSION['email']; ?>">
+                <input type="email" name="email" id="email" placeholder="Email" required value="<?php if (
+                    isset($_SESSION['email'])
+                ) {
+                    echo $_SESSION['email'];
+                } ?>">
             </div>
 
             <div class="password">
