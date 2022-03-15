@@ -32,7 +32,6 @@ if (!empty($_SESSION['errors'])) {
 }
 
 
-
 // Email取得
 $sql = 'SELECT * FROM users WHERE email = :email';
 $statement = $pdo->prepare($sql);
