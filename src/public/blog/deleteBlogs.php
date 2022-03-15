@@ -1,5 +1,4 @@
 <?php
-// DB接続
 $db['user_name'] = 'root';
 $db['password'] = 'password';
 $pdo = new PDO(
