@@ -21,18 +21,26 @@ unset($_SESSION['errors']);
 
         <!-- エラー表示 -->
         <div class="message">
-            <?php foreach ($errors as $error) : ?>
+            <?php foreach ($errors as $error): ?>
                 <p><?php echo $error; ?></p>
             <?php endforeach; ?>
         </div>
 
         <form action="./completeSignup.php" method="post">
             <div class="mail">
-                <input type="text" name="name" id="name" placeholder="User name">
+                <input type="text" name="name" id="name" placeholder="User name" required value="<?php if (
+                    isset($_SESSION['name'])
+                ) {
+                    echo $_SESSION['name'];
+                } ?>">
             </div>
 
             <div class="email">
-                <input type="email" name="email" id="email" placeholder="Email">
+                <input type="email" name="email" id="email" placeholder="Email" required value="<?php if (
+                    isset($_SESSION['email'])
+                ) {
+                    echo $_SESSION['email'];
+                } ?>">
             </div>
 
             <div class="password">
