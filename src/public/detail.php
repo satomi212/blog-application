@@ -15,7 +15,7 @@ foreach ($blogs as $blog) {
 // コメントの登録
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
-createComments($commenter_name, $comments);
+if (isset($commenter_name) && isset($comments)) createComments($commenter_name, $comments);
 
 // コメントの表示
 $commentList = selectComments();
@@ -60,9 +60,10 @@ $commentList = selectComments();
         </h3>
 
         <div class="comment">
-            <form action="../detail.php?id=<?php echo $_SESSION[
-                'blog_id'
-            ]; ?>" method="post">
+            <form action="./detail.php?
+                id=<?php echo $_SESSION['blog_id']; ?>"
+                method="post">
+
                 <div class="comment-title">
                     <label for="commenter_name">ニックネーム</label>
                     <br>
@@ -89,23 +90,25 @@ $commentList = selectComments();
         </h3>
 
         <div class="comment-list">
-            <?php foreach ($commentList as $comment): ?>
-                <div class="comments">
-                    <?php echo $comment['comments']; ?>
-                </div>
+            <?php if(isset($commentList)): ?>
+                <?php foreach ($commentList as $comment): ?>
+                    <div class="comments">
+                        <?php echo $comment['comments']; ?>
+                    </div>
 
-                <div class="created_at">
-                    <?php echo $comment['created_at']; ?>
-                </div>
+                    <div class="created_at">
+                        <?php echo $comment['created_at']; ?>
+                    </div>
 
-                <div class="commenter-name">
-                    <?php echo $comment['commenter_name']; ?>
-                </div>
+                    <div class="commenter-name">
+                        <?php echo $comment['commenter_name']; ?>
+                    </div>
 
-                <div>
-                    <a>-----------------------------------</a>
-                </div>
-            <?php endforeach; ?>
+                    <div>
+                        <a>-----------------------------------</a>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
     </div>
 
