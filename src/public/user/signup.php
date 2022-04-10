@@ -1,7 +1,11 @@
 <?php
+require_once(__DIR__ . '/../utils/session.php');
+
 session_start();
-$errors = $_SESSION['errors'] ?? [];
-unset($_SESSION['errors']);
+$errors = errorsInit();
+// 多次元配列['formInputs']の['userName']番目
+$userName = $_SESSION['formInputs']['userName'] ?? '';
+$mail = $_SESSION['formInputs']['userName'];
 ?>
 
 <!DOCTYPE html>
@@ -11,55 +15,28 @@ unset($_SESSION['errors']);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>会員登録ページ</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
 
-    <div id="main">
-        <h1 class="title">
-            <a>会員登録</a>
-        </h1>
+<body class="bg-gray-200 w-full h-screen flex justify-center items-center">
+<div class="w-96  bg-white pt-10 pb-10 rounded-xl">
+  <div class="w-60 m-auto text-center">
+    <h2 class="text-2xl pb-5">会員登録</h2>
 
-        <!-- エラー表示 -->
-        <div class="message">
-            <?php foreach ($errors as $error): ?>
-                <p><?php echo $error; ?></p>
-            <?php endforeach; ?>
-        </div>
+      <?php foreach ($errors as $error) : ?>
+        <p class="text-red-600"><?php echo $error ?></p>
+      <?php endforeach; ?>
 
-        <form action="./completeSignup.php" method="post">
-            <div class="mail">
-                <input type="text" name="name" id="name" placeholder="User name" required value="<?php if (
-                    isset($_SESSION['name'])
-                ) {
-                    echo $_SESSION['name'];
-                } ?>">
-            </div>
-
-            <div class="email">
-                <input type="email" name="email" id="email" placeholder="Email" required value="<?php if (
-                    isset($_SESSION['email'])
-                ) {
-                    echo $_SESSION['email'];
-                } ?>">
-            </div>
-
-            <div class="password">
-                <input type="password" name="password" id="password" placeholder="Password">
-            </div>
-
-            <div class="confirm">
-                <input type="password" name="confirm" id="confirm" placeholder="パスワード認証">
-            </div>
-
-            <div class="button">
-                <button type="submit">アカウント作成</button>
-            </div>
-        </form>
-
-        <div>
-            <a href="./signin.php">ログイン画面へ</a>
-        </div>
+      <form action="./signup_complete.php" method="POST">
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="User name" type=“text” name="userName" required ></p>
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Email" type=“mail” name="mail" required ></p>
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Password" type="password" name="password"></p>
+        <p><input class='border-2 border-gray-300 w-full mb-5' placeholder="Password確認" type="password" name="confirmPassword"></p>
+        <button class='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded mb-5 w-full' type="submit">アカウント作成</button>
+      </form>
+      <a class="text-blue-600" href="./signin.php">ログイン画面へ</a>
     </div>
-
+  </div>
 </body>
+
 </html>

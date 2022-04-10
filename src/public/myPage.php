@@ -1,29 +1,12 @@
 <?php
+require_once(__DIR__ . '/utils/redirect.php');
+require_once(__DIR__ . '/utils/selectBlogsByUser_id.php');
+
 session_start();
-
 //ログインされていない場合は強制的にログインページへ
-if (!isset($_SESSION['id'])) {
-    header('Location: ./user/signin.php');
-    exit();
-}
+if (!isset($_SESSION['id'])) redirect('user/signin.php');
 
-// DB接続
-$db['user_name'] = 'root';
-$db['password'] = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=blog; charset=utf8',
-    $db['user_name'],
-    $db['password']
-);
-
-// 記事取得
-$sql = 'SELECT * FROM blogs WHERE user_id = :id';
-
-// 実行
-$statement = $pdo->prepare($sql);
-$statement->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
-$statement->execute();
-$blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
+$blogs = selectBlogsByUser_id();
 ?>
 
 <!DOCTYPE html>
@@ -84,9 +67,7 @@ $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <?php endif; ?>
 
                 <div class="button">
-                    <form action="./myArticleDetail.php?id=<?php echo $blog[
-                        'id'
-                    ]; ?>" method="post">
+                    <form action="./detail_myArticle.php?id=<?php echo $blog['id']; ?>" method="post">
                         <button type="submit">記事詳細へ</button>
                     </form>
                 </div>

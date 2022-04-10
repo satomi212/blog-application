@@ -1,42 +1,24 @@
 <?php
-// DB接続
-$db['user_name'] = 'root';
-$db['password'] = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=blog; charset=utf8',
-    $db['user_name'],
-    $db['password']
-);
-
-session_start();
+require_once(__DIR__ . '/utils/selectBlogsById.php');
+require_once(__DIR__ . '/utils/createComments.php');
+require_once(__DIR__ . '/utils/selectComments.php');
 
 // 記事の取得
-require './selectArticle.php';
+$id = filter_input(INPUT_GET, 'id');
+$blogs = selectBlogsById($id);
+
+session_start();
+foreach ($blogs as $blog) {
+    $_SESSION['blog_id'] = $blog['id'];
+}
 
 // コメントの登録
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
 $comments = filter_input(INPUT_POST, 'comments');
-
-$sql =
-    'INSERT INTO comments (user_id, blog_id, commenter_name, comments) VALUES (:user_id, :blog_id, :commenter_name, :comments)';
-$statement = $pdo->prepare($sql);
-
-$statement->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
-$statement->bindValue(':blog_id', $_SESSION['blog_id'], PDO::PARAM_INT);
-$statement->bindValue(':commenter_name', $commenter_name, PDO::PARAM_STR);
-$statement->bindValue(':comments', $comments, PDO::PARAM_STR);
-
-// ニックネームと内容が書いてたら実行
-if (null !== $commenter_name && $comments) {
-    $statement->execute();
-}
+createComments($commenter_name, $comments);
 
 // コメントの表示
-$sql = 'SELECT * FROM comments WHERE blog_id = :id';
-$statement = $pdo->prepare($sql);
-$statement->bindValue('id', $_SESSION['blog_id'], PDO::PARAM_INT);
-$statement->execute();
-$commentList = $statement->fetchAll(PDO::FETCH_ASSOC);
+$commentList = selectComments();
 ?>
 
 

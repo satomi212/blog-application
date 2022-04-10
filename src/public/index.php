@@ -1,44 +1,18 @@
 <?php
-session_start();
-$message = $_SESSION['name'] ?? [];
-unset($_SESSION['login']);
+require_once(__DIR__ . '/utils/redirect.php');
+require_once(__DIR__ . '/utils/searchAndSortBlogs.php');
 
+session_start();
 //ログインされていない場合は強制的にログインページへ
 if (!isset($_SESSION['id'])) {
-    header('Location: ./user/signin.php');
-    exit();
+    redirect('./user/signin.php');
 }
 
-// DB接続
-$db['user_name'] = 'root';
-$db['password'] = 'password';
-$pdo = new PDO(
-    'mysql:host=mysql; dbname=blog; charset=utf8',
-    $db['user_name'],
-    $db['password']
-);
+// ヘッダーのメッセージ
+$message = $_SESSION['name'] ?? [];
 
-// 検索機能
-$sql = "SELECT * FROM blogs WHERE contents LIKE '%" . $_POST['search'] . "%' ";
-
-// ソート機能
-$sortMode = '';
-if (!empty($_GET['order'])) {
-    $sortMode = filter_input(
-        INPUT_GET,
-        'order',
-        FILTER_SANITIZE_FULL_SPECIAL_CHARS
-    );
-}
-
-if ($sortMode == 'asc' || $sortMode == 'desc') {
-    $sql = $sql . "order by created_at $sortMode";
-}
-
-// 実行
-$statement = $pdo->prepare($sql);
-$statement->execute();
-$blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
+$searchWord = $_POST['search'];
+$blogs = searchAndSortBlogs($searchWord);
 ?>
 
 
@@ -99,7 +73,6 @@ $blogs = $statement->fetchAll(PDO::FETCH_ASSOC);
                 <button type="submit">古い順</button>
             </form>
         </div>
-
 
         <div class="main">
             <?php foreach ($blogs as $blog): ?>
