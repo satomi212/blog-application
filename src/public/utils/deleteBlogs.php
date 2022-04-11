@@ -12,7 +12,7 @@ function deleteBlogs($id)
     blogs
     WHERE
     id = :id;
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':id', $id, PDO::PARAM_INT);

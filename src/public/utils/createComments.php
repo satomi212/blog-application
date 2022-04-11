@@ -11,7 +11,7 @@ function createComments(string $commenter_name, string $comments): void
     (user_id, blog_id, commenter_name, comments)
     VALUES
     (:user_id, :blog_id, :commenter_name, :comments)
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);

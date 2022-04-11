@@ -11,7 +11,7 @@ function selectComments(): ?array
     FROM
     comments
     WHERE blog_id = :id
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':id', $_SESSION['blog_id'], PDO::PARAM_INT);

@@ -12,7 +12,7 @@ function editBlogs(int $id): ?array
     blogs
     WHERE
     id = :id
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':id', (int)$id, PDO::PARAM_INT);

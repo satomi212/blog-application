@@ -14,7 +14,7 @@ function searchAndSortBlogs($searchWord): ?array
     contents
     LIKE
     :searchWord
-    EOF;
+EOF;
 
     // ソート機能
     $sortMode = '';

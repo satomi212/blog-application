@@ -13,7 +13,7 @@ function createUser(string $userName, string $mail, string $password): void
     (name, email, password)
     VALUES
     (:userName, :mail, :password)
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':userName', $userName, PDO::PARAM_STR);

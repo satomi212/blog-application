@@ -6,11 +6,11 @@ function createBlogs(string $title, string $contents): void
     $pdo = pdoInit();
 
     $sql = <<<EOF
-INSERT INTO
-blogs
-(user_id, title, contents)
-VALUES
-(:user_id, :title, :contents)
+    INSERT INTO
+    blogs
+    (user_id, title, contents)
+    VALUES
+    (:user_id, :title, :contents)
 EOF;
 
     $statement = $pdo->prepare($sql);

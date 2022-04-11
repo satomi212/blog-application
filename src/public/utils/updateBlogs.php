@@ -6,12 +6,12 @@ function updateBlogs(int $id, string $title, string $contents): void
     $pdo = pdoInit();
 
     $sql = <<<EOF
-UPDATE
-blogs
-SET
-title = :title, contents = :contents
-WHERE
-id = :id
+    UPDATE
+    blogs
+    SET
+    title = :title, contents = :contents
+    WHERE
+    id = :id
 EOF;
 
     $statement = $pdo->prepare($sql);

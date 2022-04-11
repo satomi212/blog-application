@@ -12,7 +12,7 @@ function selectBlogsByUser_id(): ?array
     blogs
     WHERE
     user_id = :id
-    EOF;
+EOF;
 
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':id', $_SESSION['id'], PDO::PARAM_INT);
