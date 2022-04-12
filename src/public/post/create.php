@@ -1,8 +1,7 @@
 <?php
+require_once(__DIR__ . '/../utils/session.php');
 session_start();
-$errors = $_SESSION['errors'] ?? [];
-// ↓エラ-メッセージを毎回消す
-unset($_SESSION['errors']);
+$errors = errorsInit();
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +41,12 @@ unset($_SESSION['errors']);
         <div class="button">
             <br>
             <button type="submit" name="submit">新規作成</button>
+
         </div>
+    </form>
+
+    <form action="./../myPage.php" method="post">
+        <button type="submit" name="submit">戻る</button>
     </form>
 
 </body>

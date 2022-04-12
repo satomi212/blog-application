@@ -1,65 +1,33 @@
 <?php
+// 関数のvar_dumpは使ってるファイルでやる
+// returnの後でvar_dumpしても意味ないよ！！
+require_once(__DIR__ . '/../utils/redirect.php');
+require_once(__DIR__ . '/../utils/findUserByMail.php');
+require_once(__DIR__ . '/../utils/createUser.php');
+require_once(__DIR__ . '/../utils/session.php');
+
+$mail = filter_input(INPUT_POST, 'mail');
+$userName = filter_input(INPUT_POST, 'userName');
+$password = filter_input(INPUT_POST, 'password');
+$confirmPassword = filter_input(INPUT_POST, 'confirmPassword');
+
 session_start();
-$errors = $_SESSION['errors'] ?? [];
-unset($_SESSION['errors']);
+if (empty($password) || empty($confirmPassword)) appendError("パスワードを入力してください");
+if ($password !== $confirmPassword) appendError("パスワードが一致しません");
+
+if (!empty($_SESSION['errors'])) {
+    $_SESSION['formInputs']['mail'] = $mail;
+    $_SESSION['formInputs']['userName'] = $userName;
+    redirect('signup.php');
+}
+
+// mailが一致するユーザーの取得
+$user = findUserByMail($mail);
+if (!is_null($user)) appendError("既に登録済みのメールアドレスです");
+if (!empty($_SESSION['errors'])) redirect('signup.php');
+
+// 会員情報の登録
+createUser($userName, $mail, $password);
+$_SESSION['registed'] = "登録できました。";
+redirect('signIn.php');
 ?>
-
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会員登録ページ</title>
-</head>
-<body>
-
-    <div id="main">
-        <h1 class="title">
-            <a>会員登録</a>
-        </h1>
-
-        <!-- エラー表示 -->
-        <div class="message">
-            <?php foreach ($errors as $error): ?>
-                <p><?php echo $error; ?></p>
-            <?php endforeach; ?>
-        </div>
-
-        <form action="./completeSignup.php" method="post">
-            <div class="mail">
-                <input type="text" name="name" id="name" placeholder="User name" required value="<?php if (
-                    isset($_SESSION['name'])
-                ) {
-                    echo $_SESSION['name'];
-                } ?>">
-            </div>
-
-            <div class="email">
-                <input type="email" name="email" id="email" placeholder="Email" required value="<?php if (
-                    isset($_SESSION['email'])
-                ) {
-                    echo $_SESSION['email'];
-                } ?>">
-            </div>
-
-            <div class="password">
-                <input type="password" name="password" id="password" placeholder="Password">
-            </div>
-
-            <div class="confirm">
-                <input type="password" name="confirm" id="confirm" placeholder="パスワード認証">
-            </div>
-
-            <div class="button">
-                <button type="submit">アカウント作成</button>
-            </div>
-        </form>
-
-        <div>
-            <a href="./signin.php">ログイン画面へ</a>
-        </div>
-    </div>
-
-</body>
-</html>
