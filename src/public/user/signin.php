@@ -1,10 +1,9 @@
 <?php
-session_start();
-$registed = $_SESSION['registed'] ?? '';
-$error = $_SESSION['errors'] ?? '';
+require_once(__DIR__ . '/../utils/session.php');
 
-$_SESSION['registed'] = '';
-unset($_SESSION['errors']);
+session_start();
+$registed = registedInit();
+$errors = errorsInit();
 ?>
 
 <!DOCTYPE html>
@@ -23,13 +22,17 @@ unset($_SESSION['errors']);
         <div class="w-60 m-auto text-center">
             <h2 class="text-2xl mb-5">ログイン</h2>
             <h3 class="mb-5 text-xl"><?php echo $registed; ?></h3>
-            <p class="text-red-600"><?php echo $error; ?></p>
-            <form class="px-4" action="./completeSignin.php" method="POST">
+
+            <?php foreach($errors as $error): ?>
+                <p class="text-red-600"><?php echo $error; ?></p>
+            <?php endforeach; ?>
+
+            <form class="px-4" action="./signIn_complete.php" method="POST">
                 <p><input class="border-2 border-gray-300 mb-5 w-full"
-                type=“text” name="email" type="email" required placeholder="Email" value="<?php if (
-                    isset($_SESSION['email'])
+                type=“text” name="mail" type="mail" required placeholder="Email" value="<?php if (
+                    isset($_SESSION['mail'])
                 ) {
-                    echo $_SESSION['email'];
+                    echo $_SESSION['mail'];
                 } ?>"></p>
                 <p><input class="border-2 border-gray-300 mb-5 w-full" type="password" placeholder="Password" name="password"></p>
 
