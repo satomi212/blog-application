@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/utils/selectBlogsById.php');
+require_once __DIR__ . '/utils/selectBlogsById.php';
 // ブログ取得
 $id = filter_input(INPUT_GET, 'id');
 $blogs = selectBlogsById($id);

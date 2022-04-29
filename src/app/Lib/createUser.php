@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/pdoInit.php');
+require_once __DIR__ . '/pdoInit.php';
 
 function createUser(string $userName, string $mail, string $password): void
 {

@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/pdoInit.php');
+require_once __DIR__ . '/../../app/Lib/pdoInit.php';
 
 function createBlogs(string $title, string $contents): void
 {
@@ -14,7 +14,7 @@ VALUES
 EOF;
 
     $statement = $pdo->prepare($sql);
-    $statement->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+    $statement->bindValue(':user_id', $_SESSION['formInputs']['userId'], PDO::PARAM_INT);
     $statement->bindValue(':title', $title, PDO::PARAM_STR);
     $statement->bindValue(':contents', $contents, PDO::PARAM_STR);
     $statement->execute();

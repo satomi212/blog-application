@@ -1,16 +1,20 @@
 <?php
-require_once(__DIR__ . '/utils/selectBlogsById.php');
-require_once(__DIR__ . '/utils/createComments.php');
-require_once(__DIR__ . '/utils/selectComments.php');
+require_once __DIR__ . '/utils/selectBlogsById.php';
+require_once __DIR__ . '/utils/createComments.php';
+require_once __DIR__ . '/utils/selectComments.php';
+require_once __DIR__ . '/../app/Lib/Session.php';
 
 // 記事の取得
-$id = filter_input(INPUT_GET, 'id');
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 $blogs = selectBlogsById($id);
 
-session_start();
+$session = Session::getInstance();
 foreach ($blogs as $blog) {
-    $_SESSION['blog_id'] = $blog['id'];
+    $formInputs = [
+        'blogId' => $blog['id']
+    ];
 }
+$session->setFormInputs($formInputs);
 
 // コメントの登録
 $commenter_name = filter_input(INPUT_POST, 'commenter_name');
@@ -60,7 +64,7 @@ $commentList = selectComments();
 
         <div class="comment">
             <form action="./detail.php?
-                id=<?php echo $_SESSION['blog_id']; ?>"
+                id=<?php echo $_SESSION['formInputs']['blogId']; ?>"
                 method="post">
 
                 <div class="comment-title">
