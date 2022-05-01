@@ -1,18 +1,24 @@
 <?php
-require_once(__DIR__ . '/utils/redirect.php');
-require_once(__DIR__ . '/utils/searchAndSortBlogs.php');
+require_once __DIR__ . '/../app/Lib/redirect.php';
+// require_once __DIR__ . '/../app/Lib/Session.php';
+require_once __DIR__ . '/utils/searchAndSortBlogs.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-session_start();
-//ログインされていない場合は強制的にログインページへ
-if (!isset($_SESSION['id'])) {
+use App\Lib\Session;
+
+$session = Session::getInstance();
+// ログインされてなかったらログインページへ
+if (!isset($_SESSION['formInputs']['userId'])) {
     redirect('./user/signIn.php');
 }
 
 // ヘッダーのメッセージ
 $message = $_SESSION['name'] ?? [];
 
+// 検索ワード
 $searchWord = $_POST['search'];
 $blogs = searchAndSortBlogs($searchWord);
+
 ?>
 
 <!DOCTYPE html>
@@ -27,13 +33,13 @@ $blogs = searchAndSortBlogs($searchWord);
 
 <body>
 
-    <?php include(__DIR__ . '/utils/header.php'); ?>
+    <?php include __DIR__ . '/../app/Lib/header.php'; ?>
 
-    <div class="message">
-        <h3 class="headline">
-            <a><?php echo 'こんにちは' . $message . 'さん'; ?></a>
-        </h3>
-    </div>
+        <div class="message">
+            <h3 class="headline">
+                <a><?php echo 'こんにちは' . $message . 'さん'; ?></a>
+            </h3>
+        </div>
 
     <main>
         <div class="title">

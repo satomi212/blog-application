@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/pdoInit.php');
+require_once __DIR__ . '/../../app/Lib/pdoInit.php';
 
 function searchAndSortBlogs($searchWord): ?array
 {

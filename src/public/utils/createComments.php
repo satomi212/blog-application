@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/pdoInit.php');
+require_once __DIR__ . '/../../app/Lib/pdoInit.php';
 
 function createComments(string $commenter_name, string $comments): void
 {
@@ -14,8 +14,8 @@ VALUES
 EOF;
 
     $statement = $pdo->prepare($sql);
-    $statement->bindValue(':user_id', $_SESSION['id'], PDO::PARAM_INT);
-    $statement->bindValue(':blog_id', $_SESSION['blog_id'], PDO::PARAM_INT);
+    $statement->bindValue(':user_id', $_SESSION['formInputs']['userId'], PDO::PARAM_INT);
+    $statement->bindValue(':blog_id', $_SESSION['formInputs']['blogId'], PDO::PARAM_INT);
     $statement->bindValue(':commenter_name', $commenter_name, PDO::PARAM_STR);
     $statement->bindValue(':comments', $comments, PDO::PARAM_STR);
 

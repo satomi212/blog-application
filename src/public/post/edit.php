@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/editBlogs.php');
+require_once __DIR__ . '/../utils/editBlogs.php';
 
 $id = filter_input(INPUT_GET, 'id');
 $blogs = editBlogs($id);

@@ -1,7 +1,8 @@
 <?php
-require_once(__DIR__ . '/../utils/session.php');
-session_start();
-$errors = errorsInit();
+require_once __DIR__ . '/../../app/Lib/Session.php';
+
+$session = Session::getInstance();
+$errors = $session->popAllErrors();
 ?>
 
 <!DOCTYPE html>
